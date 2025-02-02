@@ -79,6 +79,25 @@
 
 ---
 
+## Sample Output
+When you run `directree`, you will see a tree-like visualization of the directory structure:
+
+```
+./my_project
+├── src
+│   ├── main.go
+│   ├── utils.go
+│   └── config.json
+├── docs
+│   ├── README.md
+│   └── design.md
+├── .gitignore
+├── Makefile
+└── LICENSE
+```
+
+---
+
 ## Bash Script Usage (`dirtree.sh`)
 To use the Bash wrapper script:
 
