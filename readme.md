@@ -98,46 +98,46 @@ When you run `directree`, you will see a tree-like visualization of the director
 
 ---
 
-## Bash Script Usage (`dirtree.sh`)
+## Bash Script Usage (`directree.sh`)
 To use the Bash wrapper script:
 
-1. Save it as `dirtree.sh`
+1. Save it as `directree.sh`
 2. Make it executable:
    ```bash
-   chmod +x dirtree.sh
+   chmod +x directree.sh
    ```
 3. Use it in various ways:
 
 ```bash
 # Basic usage (current directory)
-./dirtree.sh
+./directree.sh
 
 # Specific directory
-./dirtree.sh /path/to/directory
+./directree.sh /path/to/directory
 
 # With colored output
-./dirtree.sh -c
+./directree.sh -c
 
 # Limit depth to 2 levels
-./dirtree.sh -d 2
+./directree.sh -d 2
 
 # Exclude additional directories
-./dirtree.sh -e build -e dist
+./directree.sh -e build -e dist
 
 # Exclude additional files
-./dirtree.sh -f "*.log" -f "*.tmp"
+./directree.sh -f "*.log" -f "*.tmp"
 
 # Save output to a markdown file
-./dirtree.sh -o output.md
+./directree.sh -o output.md
 
 # Save output to a text file
-./dirtree.sh -o output.txt
+./directree.sh -o output.txt
 
 # Copy to clipboard
-./dirtree.sh --clip
+./directree.sh --clip
 
 # Combine multiple options
-./dirtree.sh -c -d 3 -e build -f "*.log" /path/to/directory
+./directree.sh -c -d 3 -e build -f "*.log" /path/to/directory
 ```
 
 ## Clipboard Support

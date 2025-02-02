@@ -19,9 +19,11 @@ show_help() {
     echo "  -c, --color          Enable colored output"
     echo "  -e, --exclude DIR    Additional directory to exclude (can be used multiple times)"
     echo "  -f, --exclude-file F Additional file to exclude (can be used multiple times)"
+    echo "  -o, --output FILE    Save output to a file (Markdown or text)"
+    echo "  --clip               Copy output to clipboard"
     echo ""
     echo "Example:"
-    echo "  $0 -d 3 -c ~/projects"
+    echo "  $0 -d 3 -c -o tree.md --clip ~/projects"
     exit 0
 }
 
@@ -30,6 +32,8 @@ MAX_DEPTH=""
 USE_COLOR=0
 ADDITIONAL_EXCLUDES=""
 ADDITIONAL_EXCLUDE_FILES=""
+OUTPUT_FILE=""
+CLIPBOARD=0
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -52,6 +56,14 @@ while [[ $# -gt 0 ]]; do
         -f|--exclude-file)
             ADDITIONAL_EXCLUDE_FILES="$ADDITIONAL_EXCLUDE_FILES|$2"
             shift 2
+            ;;
+        -o|--output)
+            OUTPUT_FILE="$2"
+            shift 2
+            ;;
+        --clip)
+            CLIPBOARD=1
+            shift
             ;;
         *)
             DIRECTORY="$1"
@@ -130,8 +142,27 @@ generate_tree() {
     done
 }
 
-# Print root directory name
-echo "$(basename "$DIRECTORY")"
+# Capture output
+TREE_OUTPUT=$(generate_tree "$DIRECTORY" "" 0 "$MAX_DEPTH")
 
-# Start tree generation
-generate_tree "$DIRECTORY" "" 0 "$MAX_DEPTH"
+# Save to file if requested
+if [[ -n "$OUTPUT_FILE" ]]; then
+    echo "$TREE_OUTPUT" > "$OUTPUT_FILE"
+    echo "Saved to $OUTPUT_FILE"
+fi
+
+# Copy to clipboard if requested
+if [[ $CLIPBOARD -eq 1 ]]; then
+    if command -v pbcopy &> /dev/null; then
+        echo "$TREE_OUTPUT" | pbcopy  # macOS
+    elif command -v xclip &> /dev/null; then
+        echo "$TREE_OUTPUT" | xclip -selection clipboard  # Linux
+    elif command -v clip.exe &> /dev/null; then
+        echo "$TREE_OUTPUT" | clip.exe  # Windows (Git Bash, WSL)
+    else
+        echo "Clipboard support not found. Install 'xclip' (Linux) or use 'pbcopy' (macOS)."
+    fi
+fi
+
+# Print output
+echo "$TREE_OUTPUT"
